@@ -3,6 +3,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.assertEquals;
 
 public class Steps {
@@ -22,6 +24,13 @@ public class Steps {
     @Step("Search \"{query}\"")
     public Steps search(By locator, String query){
         driver.findElement(locator).sendKeys(query + Keys.ENTER);
+        return this;
+    }
+
+    @Step("Switch page")
+    public Steps switchTab(){
+        ArrayList<String> tabs2 = new ArrayList<String> (driver.getWindowHandles());
+        driver.switchTo().window(tabs2.get(1));
         return this;
     }
 

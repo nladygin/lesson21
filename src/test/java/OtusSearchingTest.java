@@ -68,6 +68,7 @@ public class OtusSearchingTest {
         steps
                 .open("https://www.rambler.ru/")
                 .search(By.name("query"), "otus")
+                .switchTab()
                 .check(By.cssSelector("div.b-serp-item h2"), "OTUS - Онлайн-образование");
     }
 
