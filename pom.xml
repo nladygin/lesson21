@@ -24,7 +24,7 @@
                 <version>3.0.0-M3</version>
                 <configuration>
 
-                    <parallel>class</parallel>
+                    <parallel>all</parallel>
                     <rerunFailingTestsCount>1</rerunFailingTestsCount>
                     <forkCount>10</forkCount>
                     <threadCount>3</threadCount>
