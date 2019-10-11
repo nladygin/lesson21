@@ -1,10 +1,10 @@
-properties([[$class: 'GithubProjectProperty', displayName: 'Jenkinsfile test', projectUrlStr: 'https://github.com/nladygin/lesson21/'], parameters([string(defaultValue: '*/master', description: 'branch', name: 'branch', trim: true)]), pipelineTriggers([cron('0 1 * * *'), githubPush()])])
-
 node {
     
+    properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')), disableConcurrentBuilds(), [$class: 'GithubProjectProperty', displayName: '', projectUrlStr: 'https://github.com/nladygin/lesson21/'], parameters([string(defaultValue: '*/master', description: '', name: 'branch', trim: true)]), pipelineTriggers([cron('0 1 * * *'), githubPush()])])
+
     stage('Update') {
             gitResult = checkout([$class: 'GitSCM', 
-                                branches: [[name: '${branch}']], 
+                                branches: [[name: "${params.branch}"]], 
                                 doGenerateSubmoduleConfigurations: false, 
                                 extensions: [[$class: 'WipeWorkspace']], 
                                 submoduleCfg: [], 
@@ -34,9 +34,10 @@ node {
         },
         notification: {
             stage('Notification') {
-                mail to:"nladygin@hrsinternational.com", 
-                subject:"test result: ${currentBuild.fullDisplayName}", 
-                body: "Build number: #${env.BUILD_NUMBER}\nBuild status: ${currentBuild.currentResult}\nBranch name: ${gitResult.GIT_BRANCH}\nResult summary: Total: ${testResult.getTotalCount()} / Passed: ${testResult.getPassCount()} / Failed: ${testResult.getFailCount()} / Skiped: ${testResult.getSkipCount()}\nJob total time: ${currentBuild.durationString}\nBuild URL: ${BUILD_URL}"
+                mail to:"${gitResult.GIT_AUTHOR_EMAIL}",
+                     cc: "nladygin@hrsinternational.com", 
+                     subject:"test result: ${currentBuild.fullDisplayName}", 
+                     body: "Build number: #${env.BUILD_NUMBER}\nBuild status: ${currentBuild.currentResult}\nBranch name: ${gitResult.GIT_BRANCH}\nResult summary: Total: ${testResult.getTotalCount()} / Passed: ${testResult.getPassCount()} / Failed: ${testResult.getFailCount()} / Skiped: ${testResult.getSkipCount()}\nJob total time: ${currentBuild.durationString}\nBuild URL: ${BUILD_URL}"
             }
         }, failFast: false
     )
