@@ -1,6 +1,6 @@
 node {
     
-    properties([[$class: 'GithubProjectProperty', displayName: 'Jenkinsfile test', projectUrlStr: 'https://github.com/nladygin/lesson21/'], parameters([string(defaultValue: '*/master', description: 'branch', name: 'branch', trim: true)]), pipelineTriggers([cron('0 1 * * *'), githubPush(), pollSCM('')])])
+    properties([[$class: 'GithubProjectProperty', displayName: 'Jenkinsfile', projectUrlStr: 'https://github.com/nladygin/lesson21/'], parameters([string(defaultValue: '*/master', description: 'branch', name: 'branch', trim: true)]), pipelineTriggers([cron('0 1 * * *'), githubPush(), pollSCM('')])])
     
     stage('Update') {
             gitResult = checkout([$class: 'GitSCM', 
